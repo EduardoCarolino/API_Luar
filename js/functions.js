@@ -81,27 +81,6 @@ async function gerar(){
 
         campo.innerHTML += teste;
     });
-    
-
-
-/* <div class="col-4">
-    <a href="produto.html"><img class="shadow-default" src="./images/velas/happy_day_1.jpg"></a>
-    <h4 class="nome1" class="mt-[5px]">Oh, Happy Day</h4>
-    <div class="rating" class="rating">
-        <i class="fa fa-star"></i>
-        <i class="fa fa-star"></i>
-        <i class="fa fa-star"></i>
-        <i class="fa fa-star"></i>
-        <i class="fa fa-star"></i>
-    </div>
-    <section
-        onclick="link('https://api.whatsapp.com/send/?phone=5545920013524&text=Olá, gostaria de saber mais sobre as velas da linha Oh, Happy Day.&type=phone_number&app_absent=0')"
-        class="w-[180px] cursor-pointer flex gap-[10px] justify-center items-center h-[35px] bg-[#89A992] rounded-[50px] mt-[10px]">
-        <p class="font-[JostMedium] text-[white]">Entrar em contato</p>
-        <i class='bx bxl-whatsapp text-[25px] text-white '></i>
-    </section>,
-</div> */
-    
 
 }
 
