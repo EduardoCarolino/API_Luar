@@ -29,16 +29,28 @@ function getBuy(link, e) {
 
 const url = "https://2mhzqf1u.api.sanity.io/v2022-03-07/data/query/production?query=*%5B_type%3D%3D%22maisVendidos%22%5D%0A"
 
+const urlImage = "https://2mhzqf1u.api.sanity.io/v2022-03-07/data/query/production?query=*%5B_type%3D%3D%22maisVendidos%22%5D.Foto.asset._ref%0A";
+
 async function gerar(){
     const requisicao = await fetch(url);
+    const requisicaoImage = await fetch(urlImage);
+
     const tratar = await requisicao.json();
+    const tratarImage = await requisicaoImage.json();
+
     const conteudo = tratar.result;
+    const conteudoImage = tratarImage.result;
     let campo = document.querySelector("#campo");
+
+    console.log(conteudoImage);
+    
 
 
     console.log(conteudo);
     conteudo.forEach(element => {
         console.log(element);
+
+        console.log(element.Foto)
 
         let nivelEstrela = element.NivelEstrela;
 
@@ -75,7 +87,7 @@ async function gerar(){
          */
         
         const teste = `<div class="col-4">
-         <a href="produto.html"><img class="shadow-default" src="./images/velas/happy_day_1.jpg"></a>
+         <a href="produto.html"><img class="shadow-default" src="${conteudoImage[3]}"></a>
          <h4 class="mt-[5px]">${element.Nome}</h4>
          <div class="rating">
            ${nivel[0]}
