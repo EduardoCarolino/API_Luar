@@ -7,7 +7,6 @@ function switch_menu() {
             dropdown_menu.classList.add("opacity-[0]")
         }
     }
-
 }
 
 function link(link) {
@@ -36,12 +35,6 @@ async function gerar(){
     const conteudo = tratar.result;
     let campo = document.querySelector("#campo");
 
-    campo.innerHTML = ""
-    
-
-    // campo.forEach(element => {
-    //     element.remove()
-    // })    
 
     console.log(conteudo);
     conteudo.forEach(element => {
@@ -52,56 +45,59 @@ async function gerar(){
         const nivel = [];
   
         nivelEstrela = nivelEstrela.toString().split(",");
+<<<<<<< HEAD
         
+=======
+        let nivelEstrelaInteiro = Number(nivelEstrela[0]);
+        let nivelEstrelaMenor = Number(nivelEstrela[1]);
+>>>>>>> db2232c163c14f2f3ac6c22bae08be8a98374846
 
-        // for(let i = 5; i > 0; i--){
-        //     if(){
+        nivelEstrelaMenor = isNaN(nivelEstrela);
 
-        //     }
-        // }
+        console.log(nivelEstrelaMenor);
+
+        for(let i = 5; i > 0; i--){
+            if(nivelEstrelaInteiro > 0){
+                nivel.push('<i class="fa fa-star"></i>');
+                nivelEstrelaInteiro --;
+            }else if(nivelEstrelaMenor === false){
+                nivel.push('<i class="fas fa-star-half-alt"></i>');
+                nivelEstrelaMenor = true;
+            }else if(nivelEstrelaInteiro === 0 && nivelEstrelaMenor === true){
+                nivel.push('<i class="fa fa-star-o"></i>');
+            }
+        }  
+
+        console.log(nivelEstrelaInteiro);
         
+        console.log(nivel);
+        
+        /**
+         estrela inteira: <i class="fa fa-star"></i>
+         estrela metade: <i class="fas fa-star-half-alt"></i>
+         estrela vazia: <i class="fa fa-star-o"></i>
+         */
         
         const teste = `<div class="col-4">
-        <a href="produto.html"><img class="shadow-default" src="./images/velas/happy_day_1.jpg"></a>
-    <h4 class="mt-[5px]">${element.Nome}</h4>
-    <div class="rating">
-        <i class="fa fa-star"></i>
-        <i class="fa fa-star"></i>
-        <i class="fa fa-star"></i>
-        <i class="fa fa-star"></i>
-        <i class="fa fa-star"></i>
-    </div>
-    <section
-        onclick="link('https://api.whatsapp.com/send/?phone=5545920013524&text=Olá, gostaria de saber mais sobre as velas da linha Oh, Happy Day.&type=phone_number&app_absent=0')"
-        class="w-[180px] cursor-pointer flex gap-[10px] justify-center items-center h-[35px] bg-[#89A992] rounded-[50px] mt-[10px]">
-        <p class="font-[JostMedium] text-[white]">Entrar em contato</p>
-        <i class='bx bxl-whatsapp text-[25px] text-white '></i>
-    </section>
-</div>`
+         <a href="produto.html"><img class="shadow-default" src="./images/velas/happy_day_1.jpg"></a>
+         <h4 class="mt-[5px]">${element.Nome}</h4>
+         <div class="rating">
+           ${nivel[0]}
+           ${nivel[1]}
+           ${nivel[2]}
+           ${nivel[3]}
+           ${nivel[4]}
+         </div>
+         <section
+            onclick="link('https://api.whatsapp.com/send/?phone=5545920013524&text=Olá, gostaria de saber mais sobre as velas da linha Oh, Happy Day.&type=phone_number&app_absent=0')"
+            class="w-[180px] cursor-pointer flex gap-[10px] justify-center items-center h-[35px] bg-[#89A992] rounded-[50px] mt-[10px]">
+            <p class="font-[JostMedium] text-[white]">Entrar em contato</p>
+            <i class='bx bxl-whatsapp text-[25px] text-white '></i>
+         </section>
+        </div>`
 
         campo.innerHTML += teste;
     });
-    
-
-
-/* <div class="col-4">
-    <a href="produto.html"><img class="shadow-default" src="./images/velas/happy_day_1.jpg"></a>
-    <h4 class="nome1" class="mt-[5px]">Oh, Happy Day</h4>
-    <div class="rating" class="rating">
-        <i class="fa fa-star"></i>
-        <i class="fa fa-star"></i>
-        <i class="fa fa-star"></i>
-        <i class="fa fa-star"></i>
-        <i class="fa fa-star"></i>
-    </div>
-    <section
-        onclick="link('https://api.whatsapp.com/send/?phone=5545920013524&text=Olá, gostaria de saber mais sobre as velas da linha Oh, Happy Day.&type=phone_number&app_absent=0')"
-        class="w-[180px] cursor-pointer flex gap-[10px] justify-center items-center h-[35px] bg-[#89A992] rounded-[50px] mt-[10px]">
-        <p class="font-[JostMedium] text-[white]">Entrar em contato</p>
-        <i class='bx bxl-whatsapp text-[25px] text-white '></i>
-    </section>,
-</div> */
-    
 
 }
 
