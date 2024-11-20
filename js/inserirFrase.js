@@ -7,13 +7,11 @@ async function fetchProductData(params) {
         
         if(data.result && data.result.length > 0){
             const frase = data.result[0];
-            console.log(frase);
             document.getElementById("tituloPrincipal").textContent = frase.titulo;
             document.getElementById("frasePrincipal").textContent = frase.frase;
 
-            
         }else{
-            console.error('Nenhum produto');
+            console.error('Deu pau!');
         }
     } catch(e) {
 

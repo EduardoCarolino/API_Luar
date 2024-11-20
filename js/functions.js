@@ -45,12 +45,8 @@ async function gerar(){
         const nivel = [];
   
         nivelEstrela = nivelEstrela.toString().split(",");
-<<<<<<< HEAD
-        
-=======
         let nivelEstrelaInteiro = Number(nivelEstrela[0]);
         let nivelEstrelaMenor = Number(nivelEstrela[1]);
->>>>>>> db2232c163c14f2f3ac6c22bae08be8a98374846
 
         nivelEstrelaMenor = isNaN(nivelEstrela);
 
