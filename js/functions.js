@@ -52,7 +52,7 @@ async function gerar(){
         const nivel = [];
   
         nivelEstrela = nivelEstrela.toString().split(",");
-        inteiro
+        
 
         // for(let i = 5; i > 0; i--){
         //     if(){
