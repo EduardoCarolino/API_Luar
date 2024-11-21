@@ -22,7 +22,8 @@ const query = encodeURIComponent(`
     asset->{
       url
     }
-  }
+  },
+  NivelEstrela
 }
   `);
 
@@ -86,7 +87,7 @@ gerarProduto();
 produto.addEventListener("click", evento => {
   result.forEach(element => {
     if(element.nome){
-      
+
     }
   })
 });
