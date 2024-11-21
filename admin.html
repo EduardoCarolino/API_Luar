@@ -38,3 +38,28 @@ function renderComments(comments) {
 }
 
 fetchComments();
+
+async function editComment(commentId) {
+  const commentToEdit = await client.getDocument(commentId);
+
+  // Preencher o formulário com os dados atuais
+  document.getElementById('edit-name').value = commentToEdit.name;
+  document.getElementById('edit-comment').value = commentToEdit.comment;
+
+  document.getElementById('save-btn').onclick = async () => {
+    await client.patch(commentId)
+      .set({
+        name: document.getElementById('edit-name').value,
+        comment: document.getElementById('edit-comment').value
+      })
+      .commit();
+    fetchComments(); // Recarregar os comentários atualizados
+  };
+}
+
+<div id="edit-form">
+  <input type="text" id="edit-name" placeholder="Nome" />
+  <textarea id="edit-comment" placeholder="Comentário"></textarea>
+  <button id="save-btn">Salvar</button>
+</div>
+
