@@ -37,7 +37,7 @@ const query = encodeURIComponent(`
       },
       NivelEstrela
     }
-  `);
+`);
   
   const url = `https://2mhzqf1u.api.sanity.io/v2022-03-07/data/query/production?query=${query}`;
   
@@ -47,22 +47,13 @@ const query = encodeURIComponent(`
 
 async function gerar(){
     const requisicao = await fetch(url);
-
     const tratar = await requisicao.json();
-
     const conteudo = tratar.result;
 
     let campo = document.querySelector("#campo");
 
     
-
-
-    console.log(conteudo);
     conteudo.forEach(element => {
-        console.log(element);
-
-        console.log(element.Foto?.asset?._ref)
-
         let nivelEstrela = element.NivelEstrela;
 
         const nivel = [];
@@ -72,8 +63,6 @@ async function gerar(){
         let nivelEstrelaMenor = Number(nivelEstrela[1]);
 
         nivelEstrelaMenor = isNaN(nivelEstrela);
-
-        console.log(nivelEstrelaMenor);
 
         for(let i = 5; i > 0; i--){
             if(nivelEstrelaInteiro > 0){
@@ -86,10 +75,6 @@ async function gerar(){
                 nivel.push('<i class="fa fa-star-o"></i>');
             }
         }  
-
-        console.log(nivelEstrelaInteiro);
-        
-        console.log(nivel);
         
         /**
          estrela inteira: <i class="fa fa-star"></i>
@@ -98,10 +83,6 @@ async function gerar(){
          */
 
          const imagemUrl = element.Foto?.asset?.url;
-
-         console.log(imagemUrl);
-         
-         
 
         const teste = `<div class="col-4">
          <a href="produto.html"><img class="shadow-default" src="${imagemUrl}"></a>
