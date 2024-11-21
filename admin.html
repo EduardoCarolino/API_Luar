@@ -8,3 +8,33 @@
         <button type="submit">Salvar</button>
     </form>
 </div>
+
+const client = sanityClient({
+  projectId: 'seu-id-do-projeto',
+  dataset: 'production',
+  apiVersion: '2021-10-21',
+  useCdn: true,
+});
+
+async function fetchComments() {
+  const comments = await client.fetch(`*[_type == "comment"]{
+    name,
+    comment,
+    "photoUrl": photo.asset->url
+  }`);
+  renderComments(comments);
+}
+
+function renderComments(comments) {
+  const commentList = document.getElementById('comment-list');
+  commentList.innerHTML = comments.map(comment => `
+    <div class="comment">
+      <img src="${comment.photoUrl}" alt="Foto" />
+      <strong>${comment.name}</strong>
+      <p>${comment.comment}</p>
+      <button onclick="editComment('${comment._id}')">Editar</button>
+    </div>
+  `).join('');
+}
+
+fetchComments();
