@@ -37,6 +37,30 @@ async function gerarProduto() {
 
     result.forEach(element => {
         console.log(element);
+
+        let nivelEstrela = element.NivelEstrela;
+
+        const nivel = [];
+  
+        nivelEstrela = nivelEstrela.toString().split(",");
+        let nivelEstrelaInteiro = Number(nivelEstrela[0]);
+        let nivelEstrelaMenor = Number(nivelEstrela[1]);
+
+        // nivelEstrelaMenor = isNaN(nivelEstrela);
+        // let aux = isNaN(nivelEstrelaMenor);
+
+        for(let i = 5; i > 0; i--){
+            if(nivelEstrelaInteiro > 0){
+                nivel.push('<i class="fa fa-star"></i>');
+                nivelEstrelaInteiro --;
+            }else if(typeof(nivelEstrelaMenor) === "number" && nivelEstrelaMenor >= 1 && nivelEstrelaMenor <= 9){
+                nivel.push('<i class="fas fa-star-half-alt"></i>');
+                // nivelEstrelaMenor = true;
+                nivelEstrelaMenor = 0;
+            }else if(nivelEstrelaInteiro === 0 /*&& nivelEstrelaMenor aux === true*/){
+                nivel.push('<i class="fa fa-star-o"></i>');
+            }
+        }  
         
         const urlImagem = element.image1?.asset?.url;
 
@@ -44,28 +68,25 @@ async function gerarProduto() {
         
             <img src="${urlImagem}">
         </a>
-        <h4><a href="produto.html">${element.nome}</h4>
+        <h4>${element.nome}</h4>
         <div class="rating">
-            <i class="fa fa-star"></i>
-            <i class="fa fa-star"></i>
-            <i class="fa fa-star"></i>
-            <i class="fa fa-star"></i>
-            <i class="fa fa-star-o"></i>
+           ${nivel[0]}
+           ${nivel[1]}
+           ${nivel[2]}
+           ${nivel[3]}
+           ${nivel[4]}
         </div>
         <p>R$ ${element.valor}</p>
     </div>` 
     });
 }
 
-gerarProduto()
+gerarProduto();
 
-
-// const tipo = 23;
-
-// produto.addEventListener("click", (evento) => {
-//   console.log(evento);
-// });
-
-
-// export {tipo};
-  
+produto.addEventListener("click", evento => {
+  result.forEach(element => {
+    if(element.nome){
+      
+    }
+  })
+});

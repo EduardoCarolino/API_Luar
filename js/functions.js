@@ -62,16 +62,18 @@ async function gerar(){
         let nivelEstrelaInteiro = Number(nivelEstrela[0]);
         let nivelEstrelaMenor = Number(nivelEstrela[1]);
 
-        nivelEstrelaMenor = isNaN(nivelEstrela);
+        // nivelEstrelaMenor = isNaN(nivelEstrela);
+        // let aux = isNaN(nivelEstrelaMenor);
 
         for(let i = 5; i > 0; i--){
             if(nivelEstrelaInteiro > 0){
                 nivel.push('<i class="fa fa-star"></i>');
                 nivelEstrelaInteiro --;
-            }else if(nivelEstrelaMenor === false){
+            }else if(typeof(nivelEstrelaMenor) === "number" && nivelEstrelaMenor >= 1 && nivelEstrelaMenor <= 9){
                 nivel.push('<i class="fas fa-star-half-alt"></i>');
-                nivelEstrelaMenor = true;
-            }else if(nivelEstrelaInteiro === 0 && nivelEstrelaMenor === true){
+                // nivelEstrelaMenor = true;
+                nivelEstrelaMenor = 0;
+            }else if(nivelEstrelaInteiro === 0 /*&& nivelEstrelaMenor aux === true*/){
                 nivel.push('<i class="fa fa-star-o"></i>');
             }
         }  
