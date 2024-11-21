@@ -1,65 +1,134 @@
-<div id="admin-comments">
-    <h2>Gerenciar Comentários</h2>
-    <div id="comment-list"></div>
-    <form id="comment-form">
-        <input type="text" placeholder="Nome" id="name" />
-        <textarea placeholder="Comentário" id="comment"></textarea>
-        <input type="file" id="photo" />
-        <button type="submit">Salvar</button>
-    </form>
-</div>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Gerenciar Comentários</title>
+    <link rel="stylesheet" href="style.css"> <!-- Se você tiver um arquivo CSS -->
+</head>
+<body>
 
-const client = sanityClient({
-  projectId: 'seu-id-do-projeto',
-  dataset: 'production',
-  apiVersion: '2021-10-21',
-  useCdn: true,
-});
+    <div id="admin-comments">
+        <h2>Gerenciar Comentários</h2>
 
-async function fetchComments() {
-  const comments = await client.fetch(`*[_type == "comment"]{
-    name,
-    comment,
-    "photoUrl": photo.asset->url
-  }`);
-  renderComments(comments);
-}
+        <!-- Exibição dos Comentários -->
+        <div id="comment-list"></div>
 
-function renderComments(comments) {
-  const commentList = document.getElementById('comment-list');
-  commentList.innerHTML = comments.map(comment => `
-    <div class="comment">
-      <img src="${comment.photoUrl}" alt="Foto" />
-      <strong>${comment.name}</strong>
-      <p>${comment.comment}</p>
-      <button onclick="editComment('${comment._id}')">Editar</button>
+        <!-- Formulário para Adicionar Comentário -->
+        <form id="comment-form">
+            <input type="text" placeholder="Nome" id="name" />
+            <textarea placeholder="Comentário" id="comment"></textarea>
+            <input type="file" id="photo" />
+            <button type="submit">Salvar</button>
+        </form>
+
+        <!-- Formulário de Edição de Comentário (Oculto até ser acionado) -->
+        <div id="edit-form" style="display:none;">
+            <h3>Editar Comentário</h3>
+            <input type="text" id="edit-name" placeholder="Nome" />
+            <textarea id="edit-comment" placeholder="Comentário"></textarea>
+            <input type="file" id="edit-photo" />
+            <button id="save-btn">Salvar</button>
+        </div>
     </div>
-  `).join('');
-}
 
-fetchComments();
+    <script src="https://cdn.sanity.io/client.js"></script>
+    <script>
+        const client = sanityClient({
+            projectId: 'seu-id-do-projeto',
+            dataset: 'production',
+            apiVersion: '2021-10-21',
+            useCdn: true,
+        });
 
-async function editComment(commentId) {
-  const commentToEdit = await client.getDocument(commentId);
+        // Função para carregar os comentários
+        async function fetchComments() {
+            const comments = await client.fetch(`*[_type == "comment"]{
+                _id,
+                name,
+                comment,
+                "photoUrl": photo.asset->url
+            }`);
+            renderComments(comments);
+        }
 
-  // Preencher o formulário com os dados atuais
-  document.getElementById('edit-name').value = commentToEdit.name;
-  document.getElementById('edit-comment').value = commentToEdit.comment;
+        // Renderizar os comentários na página
+        function renderComments(comments) {
+            const commentList = document.getElementById('comment-list');
+            commentList.innerHTML = comments.map(comment => `
+                <div class="comment">
+                    <img src="${comment.photoUrl}" alt="Foto" />
+                    <strong>${comment.name}</strong>
+                    <p>${comment.comment}</p>
+                    <button onclick="editComment('${comment._id}')">Editar</button>
+                </div>
+            `).join('');
+        }
 
-  document.getElementById('save-btn').onclick = async () => {
-    await client.patch(commentId)
-      .set({
-        name: document.getElementById('edit-name').value,
-        comment: document.getElementById('edit-comment').value
-      })
-      .commit();
-    fetchComments(); // Recarregar os comentários atualizados
-  };
-}
+        // Função para editar um comentário
+        async function editComment(commentId) {
+            const commentToEdit = await client.getDocument(commentId);
 
-<div id="edit-form">
-  <input type="text" id="edit-name" placeholder="Nome" />
-  <textarea id="edit-comment" placeholder="Comentário"></textarea>
-  <button id="save-btn">Salvar</button>
-</div>
+            // Preencher o formulário de edição com os dados atuais
+            document.getElementById('edit-name').value = commentToEdit.name;
+            document.getElementById('edit-comment').value = commentToEdit.comment;
 
+            // Exibir o formulário de edição
+            document.getElementById('edit-form').style.display = 'block';
+            
+            // Lógica para salvar a edição
+            document.getElementById('save-btn').onclick = async () => {
+                const photoFile = document.getElementById('edit-photo').files[0];
+                let photoUrl = commentToEdit.photo.asset.url;
+
+                if (photoFile) {
+                    const photoData = await client.assets.upload('image', photoFile);
+                    photoUrl = photoData.url;
+                }
+
+                // Atualizar o comentário no Sanity
+                await client.patch(commentId)
+                    .set({
+                        name: document.getElementById('edit-name').value,
+                        comment: document.getElementById('edit-comment').value,
+                        photo: { asset: { _ref: photoUrl } }
+                    })
+                    .commit();
+
+                fetchComments(); // Recarregar os comentários atualizados
+                document.getElementById('edit-form').style.display = 'none'; // Fechar o formulário
+            };
+        }
+
+        // Função para salvar um novo comentário
+        document.getElementById('comment-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const comment = document.getElementById('comment').value;
+            const photoFile = document.getElementById('photo').files[0];
+
+            let photoUrl = null;
+            if (photoFile) {
+                const photoData = await client.assets.upload('image', photoFile);
+                photoUrl = photoData.url;
+            }
+
+            // Criar um novo comentário no Sanity
+            await client.create({
+                _type: 'comment',
+                name: name,
+                comment: comment,
+                photo: { asset: { _ref: photoUrl } }
+            });
+
+            fetchComments(); // Recarregar os comentários
+            document.getElementById('comment-form').reset(); // Limpar o formulário
+        });
+
+        // Inicializar a exibição dos comentários
+        fetchComments();
+    </script>
+
+</body>
+</html>
