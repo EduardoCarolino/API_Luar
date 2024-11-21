@@ -27,14 +27,22 @@ function getBuy(link, e) {
 
 //////////
 
-const url = "https://2mhzqf1u.api.sanity.io/v2022-03-07/data/query/production?query=*%5B_type%3D%3D%22maisVendidos%22%5D%0A"
+const query = encodeURIComponent(`
+    *[_type == "maisVendidos"]{
+      Nome,
+      Foto{
+        asset->{
+          url
+        }
+      },
+      NivelEstrela
+    }
+  `);
+  
+  const url = `https://2mhzqf1u.api.sanity.io/v2022-03-07/data/query/production?query=${query}`;
+  
 
-const sanityProjectId = "2mhzqf1u"; // ID do projeto Sanity
-const sanityDataset = "production"; // Dataset usado
 
-function getSanityImageUrl(ref) {
-    return `https://cdn.sanity.io/images/${sanityProjectId}/${sanityDataset}/${ref}.jpg`;
-}
 
 
 async function gerar(){
@@ -53,7 +61,7 @@ async function gerar(){
     conteudo.forEach(element => {
         console.log(element);
 
-        console.log(element.Foto)
+        console.log(element.Foto?.asset?._ref)
 
         let nivelEstrela = element.NivelEstrela;
 
@@ -89,16 +97,14 @@ async function gerar(){
          estrela vazia: <i class="fa fa-star-o"></i>
          */
 
-         const imageRef = element.Foto?.asset?._ref; // Confirme que 'asset' está presente
-         const imageUrl = imageRef ? getSanityImageUrl(imageRef.split('-').slice(1).join('-')) : 'fallback-image.jpg';
+         const imagemUrl = element.Foto?.asset?.url;
 
-         console.log(imageUrl);
-         console.log(imageRef);
+         console.log(imagemUrl);
          
          
 
         const teste = `<div class="col-4">
-         <a href="produto.html"><img class="shadow-default" src="${imageUrl}"></a>
+         <a href="produto.html"><img class="shadow-default" src="${imagemUrl}"></a>
          <h4 class="mt-[5px]">${element.Nome}</h4>
          <div class="rating">
            ${nivel[0]}
